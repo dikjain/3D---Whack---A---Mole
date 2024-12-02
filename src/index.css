@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .perspective-500 {
+    perspective: 500px;
+  }
+  .rotate-x-10 {
+    transform: rotateX(10deg);
+  }
+  .rotateX-45 {
+    transform: rotateX(45deg);
+  }
+}
+
+body {
+  background: radial-gradient(circle at center, #1a1a2e 0%, #16213e 100%);
+  min-height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}
