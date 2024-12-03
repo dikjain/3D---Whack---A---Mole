@@ -27,4 +27,3 @@ export const Particles: React.FC<{ particles: ParticleProps[] }> = ({ particles 
 
   return <div ref={particlesRef} className="absolute inset-0 pointer-events-none" />;
 };
-

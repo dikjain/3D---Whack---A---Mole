@@ -3,20 +3,23 @@ import { useFrame, ThreeEvent } from '@react-three/fiber';
 import { useSpring, animated } from '@react-spring/three';
 import * as THREE from 'three';
 import { Stars } from '@react-three/drei';
+import { GameState } from '../types/game';
 
 interface Mole3DProps {
   position: [number, number, number];
   isActive: boolean;
   onWhack: () => void;
   combo: number;
+  difficulty: GameState['difficulty'];
 }
 
-export const Mole3D: React.FC<Mole3DProps> = ({ position, isActive, onWhack, combo }) => {
+export const Mole3D: React.FC<Mole3DProps> = ({ position, isActive, onWhack, combo, difficulty }) => {
   const groupRef = useRef<THREE.Group>(null);
   const particlesRef = useRef<THREE.Points>(null);
   const [isStunned, setIsStunned] = useState(false);
   const [particles, setParticles] = useState<THREE.Points>();
   const [x, y, z] = position;
+
 
   const { moleY, scale, rotation } = useSpring({
     moleY: isActive ? 1.2 : -1.2,
@@ -105,6 +108,159 @@ export const Mole3D: React.FC<Mole3DProps> = ({ position, isActive, onWhack, com
     }
   });
 
+ 
+  const getMoleFace = () => {
+    switch (difficulty) {
+      case 'HARD':
+        return (
+          <group position={[0, 0.4, 0.35]}>
+            {/* Angry eyebrows */}
+            <group position={[-0.2, 0.15, 0]} rotation={[0, 0, Math.PI / 4]}>
+              <mesh>
+                <boxGeometry args={[0.2, 0.05, 0.05]} />
+                <meshStandardMaterial color="#4a0404" />
+              </mesh>
+            </group>
+            <group position={[0.2, 0.15, 0]} rotation={[0, 0, -Math.PI / 4]}>
+              <mesh>
+                <boxGeometry args={[0.2, 0.05, 0.05]} />
+                <meshStandardMaterial color="#4a0404" />
+              </mesh>
+            </group>
+            
+            {/* Angry eyes */}
+            <group position={[-0.2, 0, 0]}>
+              <mesh>
+                <sphereGeometry args={[0.12]} />
+                <meshStandardMaterial color="#ff0000" />
+              </mesh>
+              <mesh position={[0, 0, 0.08]}>
+                <coneGeometry args={[0.08, 0.16, 32]} />
+                <meshStandardMaterial color={isStunned ? "#ff0000" : "black"} />
+              </mesh>
+            </group>
+            <group position={[0.2, 0, 0]}>
+              <mesh>
+                <sphereGeometry args={[0.12]} />
+                <meshStandardMaterial color="#ff0000" />
+              </mesh>
+              <mesh position={[0, 0, 0.08]}>
+                <coneGeometry args={[0.08, 0.16, 32]} />
+                <meshStandardMaterial color={isStunned ? "#ff0000" : "black"} />
+              </mesh>
+            </group>
+
+            {/* Angry mouth */}
+            <mesh position={[0, -0.15, 0]}>
+              <torusGeometry args={[0.15, 0.04, 16, 100, Math.PI]} rotation={[0, 0, Math.PI]} />
+              <meshStandardMaterial color="#4a0404" />
+            </mesh>
+          </group>
+        );
+      case 'MEDIUM':
+        return (
+          <group position={[0, 0.4, 0.35]}>
+            {/* Confused eyes - one higher than other */}
+            <group position={[-0.2, 0.1, 0]}>
+              <mesh>
+                <sphereGeometry args={[0.12]} />
+                <meshStandardMaterial color="#ffd700" />
+              </mesh>
+              <mesh position={[0, 0, 0.08]} rotation={[0, 0, Math.PI/6]}>
+                <torusGeometry args={[0.08, 0.02, 16, 100]} />
+                <meshStandardMaterial color={isStunned ? "#ff0000" : "black"} />
+              </mesh>
+            </group>
+            <group position={[0.2, -0.05, 0]}>
+              <mesh>
+                <sphereGeometry args={[0.12]} />
+                <meshStandardMaterial color="#ffd700" />
+              </mesh>
+              <mesh position={[0, 0, 0.08]} rotation={[0, 0, -Math.PI/6]}>
+                <torusGeometry args={[0.08, 0.02, 16, 100]} />
+                <meshStandardMaterial color={isStunned ? "#ff0000" : "black"} />
+              </mesh>
+            </group>
+
+            {/* Confused mouth - zigzag */}
+            <group position={[0, -0.15, 0]}>
+              <mesh>
+                <torusGeometry args={[0.1, 0.02, 16, 100, Math.PI * 0.7]} />
+                <meshStandardMaterial color="black" />
+              </mesh>
+            </group>
+
+            {/* Question mark above head */}
+            <group position={[0, 0.4, 0]}>
+              <mesh>
+                <torusGeometry args={[0.06, 0.02, 16, 100, Math.PI * 1.5]} />
+                <meshStandardMaterial color="#ffd700" />
+              </mesh>
+              <mesh position={[0, -0.1, 0]}>
+                <sphereGeometry args={[0.02]} />
+                <meshStandardMaterial color="#ffd700" />
+              </mesh>
+            </group>
+          </group>
+        );
+      case 'EASY':
+        return (
+          <group position={[0, 0.4, 0.35]}>
+            {/* Happy eyes */}
+            <group position={[-0.2, 0, 0]}>
+              <mesh>
+                <sphereGeometry args={[0.12]} />
+                <meshStandardMaterial color="#32CD32" />
+              </mesh>
+              <mesh position={[0, 0, 0.08]}>
+                <torusGeometry args={[0.06, 0.02, 16, 100, Math.PI]} rotation={[Math.PI/2, 0, 0]} />
+                <meshStandardMaterial color={isStunned ? "#ff0000" : "black"} />
+              </mesh>
+            </group>
+            <group position={[0.2, 0, 0]}>
+              <mesh>
+                <sphereGeometry args={[0.12]} />
+                <meshStandardMaterial color="#32CD32" />
+              </mesh>
+              <mesh position={[0, 0, 0.08]}>
+                <torusGeometry args={[0.06, 0.02, 16, 100, Math.PI]} rotation={[Math.PI/2, 0, 0]} />
+                <meshStandardMaterial color={isStunned ? "#ff0000" : "black"} />
+              </mesh>
+            </group>
+
+            {/* Big smile */}
+            <group position={[0, -0.1, 0]}>
+              <mesh>
+                <torusGeometry args={[0.2, 0.04, 16, 100, Math.PI]} />
+                <meshStandardMaterial color="#228B22" />
+              </mesh>
+              {/* Dimples */}
+              <mesh position={[-0.25, 0, 0]}>
+                <sphereGeometry args={[0.03]} />
+                <meshStandardMaterial color="#228B22" />
+              </mesh>
+              <mesh position={[0.25, 0, 0]}>
+                <sphereGeometry args={[0.03]} />
+                <meshStandardMaterial color="#228B22" />
+              </mesh>
+            </group>
+
+            {/* Rosy cheeks */}
+            <mesh position={[-0.3, -0.05, 0]}>
+              <sphereGeometry args={[0.08]} />
+              <meshStandardMaterial color="#ffb6c1" opacity={0.5} transparent />
+            </mesh>
+            <mesh position={[0.3, -0.05, 0]}>
+              <sphereGeometry args={[0.08]} />
+              <meshStandardMaterial color="#ffb6c1" opacity={0.5} transparent />
+            </mesh>
+          </group>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <group ref={groupRef}>
       <group position={[0, -0.25, 0]}>
@@ -141,28 +297,7 @@ export const Mole3D: React.FC<Mole3DProps> = ({ position, isActive, onWhack, com
             <meshStandardMaterial color="#8B6B42" />
           </mesh>
 
-          <group position={[0, 0.4, 0.35]}>
-            <group position={[-0.2, 0, 0]}>
-              <mesh>
-                <sphereGeometry args={[0.12]} />
-                <meshStandardMaterial color="white" />
-              </mesh>
-              <mesh position={[0, 0, 0.08]}>
-                <sphereGeometry args={[0.08]} />
-                <meshStandardMaterial color={isStunned ? "#ff0000" : "black"} />
-              </mesh>
-            </group>
-            <group position={[0.2, 0, 0]}>
-              <mesh>
-                <sphereGeometry args={[0.12]} />
-                <meshStandardMaterial color="white" />
-              </mesh>
-              <mesh position={[0, 0, 0.08]}>
-                <sphereGeometry args={[0.08]} />
-                <meshStandardMaterial color={isStunned ? "#ff0000" : "black"} />
-              </mesh>
-            </group>
-          </group>
+          {getMoleFace()}
 
           <mesh position={[0, 0.25, 0.45]}>
             <sphereGeometry args={[0.15]} />
@@ -241,5 +376,3 @@ function createComboTexture(combo: number): HTMLCanvasElement {
 
   return canvas;
 }
-
-

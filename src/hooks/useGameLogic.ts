@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { GameState } from '../types/game';
-import { GAME_DURATION, MOLE_COUNT, DIFFICULTY_LEVELS } from '../utils/constants';
+import { DifficultyLevel, GameState } from '../types/game';
+import { GAME_DURATION, DIFFICULTY_LEVELS } from '../utils/constants';
 
 export const useGameLogic = () => {
   const [gameState, setGameState] = useState<GameState>({
@@ -8,20 +8,21 @@ export const useGameLogic = () => {
     timeLeft: GAME_DURATION,
     highScore: 0,
     isPlaying: false,
-    activeMoles: new Array(MOLE_COUNT).fill(false),
+    activeMoles: new Array(DIFFICULTY_LEVELS.MEDIUM.moleCount).fill(false),
     combo: 0,
     difficulty: 'MEDIUM',
     lastWhackTime: 0,
   });
 
-  const startGame = useCallback(() => {
+  const startGame = useCallback((difficulty: DifficultyLevel) => {
     setGameState(prev => ({
       ...prev,
       score: 0,
       timeLeft: GAME_DURATION,
       isPlaying: true,
-      activeMoles: new Array(MOLE_COUNT).fill(false),
+      activeMoles: new Array(DIFFICULTY_LEVELS[difficulty].moleCount).fill(false),
       combo: 0,
+      difficulty: difficulty.toUpperCase() as DifficultyLevel,
       lastWhackTime: Date.now(),
     }));
   }, []);
@@ -123,5 +124,3 @@ export const useGameLogic = () => {
     whackMole,
   };
 };
-
-

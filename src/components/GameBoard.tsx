@@ -1,7 +1,7 @@
 import React from 'react';
 import { Mole } from './Mole';
 import { GameState } from '../types/game';
-import { GRID_SIZE } from '../utils/constants';
+import { DIFFICULTY_LEVELS } from '../utils/constants';
 
 interface GameBoardProps {
   gameState: GameState;
@@ -9,12 +9,14 @@ interface GameBoardProps {
 }
 
 export const GameBoard: React.FC<GameBoardProps> = ({ gameState, onWhack }) => {
+  const gridSize = DIFFICULTY_LEVELS[gameState.difficulty].gridSize;
+
   return (
     <div className="relative">
       <div 
         className="grid gap-4 p-8 bg-gradient-to-b from-green-800 to-green-900 rounded-xl shadow-2xl transform rotate-x-10"
         style={{
-          gridTemplateColumns: `repeat(${GRID_SIZE}, minmax(0, 1fr))`,
+          gridTemplateColumns: `repeat(${gridSize}, minmax(0, 1fr))`,
           perspective: '1000px',
         }}
       >
