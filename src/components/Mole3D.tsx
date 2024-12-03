@@ -152,7 +152,7 @@ export const Mole3D: React.FC<Mole3DProps> = ({ position, isActive, onWhack, com
 
             {/* Angry mouth */}
             <mesh position={[0, -0.15, 0]}>
-              <torusGeometry args={[0.15, 0.04, 16, 100, Math.PI]} rotation={[0, 0, Math.PI]} />
+              <torusGeometry args={[0.15, 0.04, 16, 100, Math.PI]} />
               <meshStandardMaterial color="#4a0404" />
             </mesh>
           </group>
@@ -213,7 +213,7 @@ export const Mole3D: React.FC<Mole3DProps> = ({ position, isActive, onWhack, com
                 <meshStandardMaterial color="#32CD32" />
               </mesh>
               <mesh position={[0, 0, 0.08]}>
-                <torusGeometry args={[0.06, 0.02, 16, 100, Math.PI]} rotation={[Math.PI/2, 0, 0]} />
+                <torusGeometry args={[0.06, 0.02, 16, 100, Math.PI]} />
                 <meshStandardMaterial color={isStunned ? "#ff0000" : "black"} />
               </mesh>
             </group>
@@ -223,7 +223,7 @@ export const Mole3D: React.FC<Mole3DProps> = ({ position, isActive, onWhack, com
                 <meshStandardMaterial color="#32CD32" />
               </mesh>
               <mesh position={[0, 0, 0.08]}>
-                <torusGeometry args={[0.06, 0.02, 16, 100, Math.PI]} rotation={[Math.PI/2, 0, 0]} />
+                <torusGeometry args={[0.06, 0.02, 16, 100, Math.PI]} />
                 <meshStandardMaterial color={isStunned ? "#ff0000" : "black"} />
               </mesh>
             </group>

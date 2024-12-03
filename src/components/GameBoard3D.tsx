@@ -12,14 +12,12 @@ export const GameBoard3D: React.FC<GameBoard3DProps> = ({ gameState, onWhack }) 
   const gridSize = DIFFICULTY_LEVELS[gameState.difficulty].gridSize;
   const offset = (gridSize - 1) / 2;
 
-  // Define colors based on difficulty
   const difficultyColors = {
-    EASY: '#8B4513', // SaddleBrown
-    MEDIUM: '#A0522D', // Sienna
-    HARD: '#D2691E', // Chocolate
+    EASY: '#8B4513',
+    MEDIUM: '#A0522D',
+    HARD: '#D2691E',
   };
 
-  // Get the color for the current difficulty
   const boardColor = difficultyColors[gameState.difficulty as keyof typeof difficultyColors] || '#8B4513';
 
   return (
